@@ -20,7 +20,7 @@ const SignUp = (props) => {
     setLoading(true);
     //additional frontend validation
     const { username, email, password, confirm_password } = state;
-    if (!username  || password || !confirm_password) {
+    if (!username || !email || !password || !confirm_password) {
       setAlert({ ...alert, message: "Please fill all fields" });
       setLoading(false);
     }
@@ -29,24 +29,23 @@ const SignUp = (props) => {
       setLoading(false);
     }
     const formData = { username, email, password };
-    Axios.post(
-      "https://gcsound-vault.herokuapp.com/users/signup",
-      formData
-    ).then((res) => {
-      localStorage.setItem("token", res.data.token);
-      Axios.defaults.headers.common["authorization"] = res.data.token; //set token to authorization header
-      localStorage.setItem("isAuthenticated", true); // isAuthenticated true to localStorage
-      setLoading(false);
-      setAlert({ ...alert, loading: false, message: res.data.message });
-      props.history.push("/"); //redirect to dashboard
-    }).catch((err) => {
-      setAlert({
-        ...alert,
-        color: "red",
-        message: err.response.data.message,
+    Axios.post("https://gcsound-vault.herokuapp.com/users/signup", formData)
+      .then((res) => {
+        localStorage.setItem("token", res.data.token);
+        Axios.defaults.headers.common["authorization"] = res.data.token; //set token to authorization header
+        localStorage.setItem("isAuthenticated", true); // isAuthenticated true to localStorage
+        setLoading(false);
+        setAlert({ ...alert,color:"green", loading: false, message: res.data.message });
+        props.history.push("/"); //redirect to dashboard
+      })
+      .catch((err) => {
+        setAlert({
+          ...alert,
+          color: "red",
+          message: err.response.data.message,
+        });
+        setLoading(false);
       });
-      setLoading(false)
-    });
   };
   return (
     <div className="form-area">
@@ -68,7 +67,7 @@ const SignUp = (props) => {
           id="email"
           placeholder="Enter your email"
           onChange={handleChange}
-         // required
+          required
         />
         <label htmlFor="password">Password</label>
         <input

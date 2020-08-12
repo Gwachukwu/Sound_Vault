@@ -3,7 +3,7 @@
 *::before {
     margin: 0;
     padding: 0;
-    box-sizing: inherit;
+    box-sizing: border-box;
 }
 
 body{
@@ -11,5 +11,5 @@ body{
     color: $color-white;
     font-family: $font-primary,Arial, Helvetica, sans-serif;
     text-align: center;
-    box-sizing: border-box;
+    //overflow-x: hidden;
 }
